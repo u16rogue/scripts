@@ -35,14 +35,14 @@ def recursive_formatter(path):
       elif os.path.isfile(i):
         sfx = pathlib.Path(i).suffix
         # If the suffix isnt in the targets yet and is one of the filter add it to targets
-        if sfx in ext_filter:
+        if not sfx in targets and sfx in ext_filter:
           targets.append(sfx)
   # Only run formatter in directories with actual files to format
   if os.path.isdir(path) and len(targets) != 0:
     # Reformat the target strings to be consumed by clang format
     for t in targets:
       args.append(os.path.join(path, f"*{t}"))
-    print(f"Running on {targets} - {path} ...", end="")
+    print(f"Running on {targets} - \"{path}\"...", end="")
     if subprocess.run(args).returncode != 0:
       print("Failed!")
       return
